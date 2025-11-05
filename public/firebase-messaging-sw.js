@@ -3,8 +3,7 @@
 importScripts('https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.22.1/firebase-messaging-compat.js');
 
-// Replace the config below with your frontend config values from Firebase console.
-// NOTE: When deploying, ensure this file contains the correct values or uses placeholders replaced at build time.
+
 firebase.initializeApp({
   apiKey: "AIzaSyBIm0oJfO6aDuiPILY9MqSvRPchrfGoSLU",
   authDomain: "mern-firebase-app-54dce.firebaseapp.com",
