@@ -6,12 +6,12 @@ importScripts('https://www.gstatic.com/firebasejs/9.22.1/firebase-messaging-comp
 // Replace the config below with your frontend config values from Firebase console.
 // NOTE: When deploying, ensure this file contains the correct values or uses placeholders replaced at build time.
 firebase.initializeApp({
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: "AIzaSyBIm0oJfO6aDuiPILY9MqSvRPchrfGoSLU",
+  authDomain: "mern-firebase-app-54dce.firebaseapp.com",
+  projectId: "mern-firebase-app-54dce",
+  storageBucket: "mern-firebase-app-54dce.firebasestorage.app",
+  messagingSenderId: "753823504978",
+  appId: "1:753823504978:web:74352ab9dc12ea6fd8dd8b",
 });
 
 const messaging = firebase.messaging();
