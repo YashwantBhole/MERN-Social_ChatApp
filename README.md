@@ -21,8 +21,8 @@ It features instant text & image sharing, smart notifications, and a sleek respo
 
 ## 🔗 Live Links
 
-- 🌐 Frontend: [click here](http://firemern.netlify.app/)
-- ⚙️ Backend API: [click here](https://mern-social-chatapp-backend.onrender.com)
+- 🌐 Frontend: [Click here](http://firemern.netlify.app/)
+- ⚙️ Backend API: [Click here](https://mern-social-chatapp-backend.onrender.com)
 
 ---
 
