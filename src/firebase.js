@@ -11,60 +11,45 @@ const firebaseConfig = {
 };
 
 let messaging;
-export function initFirebase() {
+
+export async function initFirebase() {
   if (messaging) return;
   const app = initializeApp(firebaseConfig);
   messaging = getMessaging(app);
 
-  // show native notification for foreground payloads
+  // Foreground message handler
   onMessage(messaging, async (payload) => {
-    console.log('foreground message', payload);
-    if (Notification.permission === 'granted') {
-      const title = payload.notification?.title || 'New message';
-      const options = { body: payload.notification?.body || '', data: payload.data || {} };
+    console.log("Foreground message:", payload);
+    if (Notification.permission === "granted") {
       const reg = await navigator.serviceWorker.getRegistration();
-      if (reg && reg.showNotification) reg.showNotification(title, options);
-      else new Notification(title, options);
+      const { title, body } = payload.notification || {};
+      const options = { body, data: payload.data || {} };
+      reg?.showNotification ? reg.showNotification(title, options) : new Notification(title, options);
     }
   });
 }
 
-async function ensureSW() {
-  if (!('serviceWorker' in navigator)) return null;
-  try {
-    const reg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-    await navigator.serviceWorker.ready;
-    return reg;
-  } catch (e) {
-    console.warn('SW register failed', e && e.message);
-    return null;
-  }
-}
-
 export async function requestAndSaveToken(email, backendUrl) {
-  if (!messaging) { console.warn('Call initFirebase() first'); return; }
+  if (!messaging) initFirebase();
 
-  // Ask permission (minimal)
-  if (Notification.permission !== 'granted') {
-    const p = await Notification.requestPermission();
-    if (p !== 'granted') console.warn('Notification permission:', p);
+  if (Notification.permission !== "granted") {
+    const permission = await Notification.requestPermission();
+    if (permission !== "granted") return console.warn("Notifications blocked.");
   }
 
-  await ensureSW(); // SW must be registered from site root
-
-  const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
   try {
-    const currentToken = await getToken(messaging, { vapidKey });
-    if (currentToken) {
-      await fetch(`${backendUrl}/api/token`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, token: currentToken })
-      });
-      console.log('FCM token saved on server');
-      return currentToken;
-    }
+    await navigator.serviceWorker.register("/firebase-messaging-sw.js");
+    const token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
+    if (!token) return console.warn("No FCM token received");
+
+    await fetch(`${backendUrl}/api/token`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, token }),
+    });
+    console.log("✅ FCM token saved on server");
+    return token;
   } catch (err) {
-    console.error('getToken error', err);
+    console.error("Firebase token error:", err.message);
   }
 }

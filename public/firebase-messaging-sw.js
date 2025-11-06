@@ -15,13 +15,11 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage(function(payload) {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  const title = payload.notification?.title || 'New message';
-  const options = {
-    body: payload.notification?.body || '',
-    // you can set icon, click_action, data, etc.
-    data: payload.data || {}
-  };
-  self.registration.showNotification(title, options);
+// Background message handler
+messaging.onBackgroundMessage((payload) => {
+  console.log("Background message:", payload);
+  const { title, body } = payload.notification || {};
+  self.registration.showNotification(title || "New Message", {
+    body: body || "You have a new message.",
+  });
 });

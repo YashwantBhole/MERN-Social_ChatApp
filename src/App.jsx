@@ -32,17 +32,23 @@ export default function App() {
 
     socketRef.current = io(API);
     socketRef.current.emit("join", { email });
-    socketRef.current.on("message", (msg) => setMessages((m) => [...m, msg]));
+    socketRef.current.on("message", (msg) => setMessages((m) => [...m, msg])); //listen for new messages
 
-    (async () => {
-      try {
-        const res = await axios.get(`${API}/api/messages`);
-        setMessages(res.data || []);
-        setTimeout(() => listRef.current?.scrollIntoView({ behavior: "smooth", block: "end" }), 50);
-      } catch (err) {
-        console.error("Failed to load messages", err);
-      }
-    })();
+    //listen for deleted messages 
+    socketRef.current.on("messageDeleted", (deletedId) => {
+      setMessages((m) => m.filter((msg) => msg._id !== deletedId));
+    });
+
+    //fetch initial messages
+      (async () => {
+        try {
+          const res = await axios.get(`${API}/api/messages`);
+          setMessages(res.data || []);
+          setTimeout(() => listRef.current?.scrollIntoView({ behavior: "smooth", block: "end" }), 50);
+        } catch (err) {
+          console.error("Failed to load messages", err);
+        }
+      })();
 
     return () => socketRef.current?.disconnect();
   }, [email]);
