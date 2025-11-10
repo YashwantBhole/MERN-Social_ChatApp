@@ -20,6 +20,11 @@ export async function initFirebase() {
   // Foreground message handler
   onMessage(messaging, async (payload) => {
     console.log("Foreground message:", payload);
+    // avoid showing notification for messages sent by this client
+    const sender = payload?.data?.sender;
+    const me = localStorage.getItem('email'); 
+    if (sender && me && sender === me) return;
+    
     if (Notification.permission === "granted") {
       const reg = await navigator.serviceWorker.getRegistration();
       const { title, body } = payload.notification || {};

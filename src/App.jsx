@@ -174,7 +174,7 @@ export default function App() {
 
                     {/* show sender name only if not mine */}
                     {!mine && (
-                      <div className="text-[10px] text-gray-400 mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                      <div className="text-[10px] text-gray-400 mb-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-150">
                         {m.from}
                       </div>
                     )}
