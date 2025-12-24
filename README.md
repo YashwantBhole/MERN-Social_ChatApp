@@ -1,4 +1,4 @@
-💬 Simple Social Chat App
+## 💬 Simple Social Chat App
 
 A real-time group chat app built with ⚛️ React, 🟩 Node.js/Express, ⚡ Socket.io, 🔥 Firebase Cloud Messaging (FCM), and ☁️ Cloudinary.
 It features instant text & image sharing, smart notifications, and a sleek responsive UI — all powered by the MERN stack + Cloud services.
